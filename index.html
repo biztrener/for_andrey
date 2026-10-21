@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Отчёт ко дню рождения</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;0,7..72,700;1,7..72,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a printed analyst memo. Navy cover band with gold guilloche and a medallion, then KPI flip cards, forecast chart with scenario switch, wish portfolio with a sum check, conclusion, then a sign-off block for the whole report. Single light "paper" theme on purpose. */
+:root {
+  --paper: #eef0ec;
+  --sheet: #ffffff;
+  --ink: #15233a;
+  --navy: #14223a;
+  --navy-2: #1d3152;
+  --muted: #5e6a7b;
+  --rule: #e0e4e6;
+  --green: #1d6b57;
+  --green-soft: #e4f0eb;
+  --gold: #b8892f;
+  --gold-hi: #e2c27a;
+  --gold-soft: #f7eed9;
+  --c1: #1d6b57; --c2: #4b977f; --c3: #b8892f; --c4: #5d7ea6; --c5: #c9a29a;
+  --font-display: "Literata", Georgia, "Times New Roman", serif;
+  --font-body: "IBM Plex Sans", "Segoe UI", Roboto, Arial, sans-serif;
+  --font-mono: "IBM Plex Mono", "Courier New", monospace;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body {
+  margin: 0; color: var(--ink);
+  background:
+    radial-gradient(900px 500px at 50% -10%, rgba(184,137,47,.10), transparent 70%),
+    var(--paper);
+  font-family: var(--font-body); font-size: 16px; line-height: 1.55;
+  padding-block: 28px 56px; padding-inline: 16px;
+}
+.sheet {
+  max-width: 860px; margin: 0 auto; background: var(--sheet);
+  border-radius: 6px; overflow: hidden;
+  box-shadow: 0 1px 0 var(--rule), 0 30px 70px rgba(21,35,58,.12);
+}
+.body { padding: clamp(22px, 5vw, 56px); display: flex; flex-direction: column; gap: clamp(34px, 5vw, 50px); }
+
+/* Cover */
+.cover { position: relative; background: linear-gradient(160deg, var(--navy-2), var(--navy) 60%); color: #fff; padding: clamp(24px, 5vw, 52px) clamp(22px, 5vw, 56px) clamp(28px, 5vw, 48px); overflow: hidden; isolation: isolate; }
+#guilloche { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; opacity: .55; }
+.meta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 16px; font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; color: #a9b6c9; }
+.meta b { color: var(--gold-hi); font-weight: 500; }
+.cover-main { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 24px; margin-top: clamp(26px, 5vw, 44px); }
+h1 { margin: 0; font-family: var(--font-display); font-weight: 700; font-size: clamp(38px, 8.4vw, 66px); line-height: 1.02; letter-spacing: -.015em; text-wrap: balance; }
+h1 em { font-style: italic; font-weight: 400; color: var(--gold-hi); }
+.dek { margin: 16px 0 0; font-family: var(--font-display); font-size: clamp(16px, 2.4vw, 19px); line-height: 1.5; color: #c9d3e0; max-width: 46ch; }
+.medal { width: clamp(118px, 22vw, 168px); aspect-ratio: 1; max-width: 100%; position: relative; }
+.medal svg { width: 100%; height: 100%; display: block; }
+.medal .ring { transform-origin: 50% 50%; animation: spin 40s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.cover-rule { margin-top: clamp(24px, 4vw, 36px); height: 1px; background: linear-gradient(90deg, var(--gold), rgba(184,137,47,.15)); }
+@media (max-width: 560px) {
+  .cover-main { grid-template-columns: 1fr; }
+  .medal { order: -1; width: 110px; }
+}
+
+/* Section heads */
+.sec { display: flex; flex-direction: column; gap: 16px; }
+.sec-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.sec-no { font-family: var(--font-mono); font-size: 12px; color: var(--gold); }
+h2 { margin: 0; font-family: var(--font-display); font-weight: 600; font-size: clamp(21px, 3.4vw, 27px); line-height: 1.2; }
+.hint { font-size: 12.5px; color: var(--muted); margin-left: auto; }
+.note { margin: 0; font-size: 13px; color: var(--muted); line-height: 1.5; }
+.note b { color: var(--ink); font-weight: 500; }
+
+/* KPI cards */
+.kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; align-items: stretch; }
+.kpi { position: relative; overflow: hidden; background: var(--sheet); border: 1px solid var(--rule); border-radius: 6px; padding: 16px 15px 14px; display: flex; flex-direction: column; gap: 5px; box-shadow: 0 6px 18px rgba(21,35,58,.05); min-width: 0; min-height: 228px; }
+.kpi-val { font-family: var(--font-display); font-weight: 700; font-size: clamp(30px, 4.4vw, 40px); line-height: 1.05; color: var(--green); font-variant-numeric: tabular-nums lining-nums; }
+.kpi-label { font-weight: 600; font-size: 14px; line-height: 1.3; min-height: 2.6em; }
+.kpi-note { font-size: 12.5px; color: var(--muted); line-height: 1.4; }
+.how {
+  appearance: none; cursor: pointer; margin-top: auto; align-self: flex-start;
+  display: inline-flex; align-items: center; gap: 6px; min-height: 36px;
+  border: 1px solid #ecdcb4; background: var(--gold-soft); color: #7a5a1c; border-radius: 999px; padding: 6px 13px;
+  font: 600 13px var(--font-body);
+}
+.how:hover { border-color: var(--gold); }
+.how:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.how .chev { transition: transform .25s; display: inline-block; }
+.method { position: absolute; inset: 0; margin: 0; background: var(--navy); color: #e6ebf2; padding: 16px 15px 14px; display: flex; flex-direction: column; gap: 8px; }
+.method .m-title { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--gold-hi); }
+.method .m-text { font-size: 13.5px; line-height: 1.45; }
+.m-close { appearance: none; cursor: pointer; margin-top: auto; align-self: flex-start; min-height: 36px; border: 1px solid rgba(226,194,122,.5); background: transparent; color: var(--gold-hi); border-radius: 999px; padding: 6px 13px; font: 600 13px var(--font-body); }
+.m-close:focus-visible { outline: 2px solid var(--gold-hi); outline-offset: 2px; }
+.kpi.open .method { animation: drop .3s ease; }
+@keyframes drop { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+@media (max-width: 760px) { .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 380px) { .kpis { grid-template-columns: 1fr; } }
+
+/* Chart */
+.seg { display: inline-flex; background: var(--paper); border-radius: 999px; padding: 3px; gap: 2px; }
+.seg button { appearance: none; border: 0; cursor: pointer; background: transparent; border-radius: 999px; padding: 7px 14px; font: 500 13px var(--font-body); color: var(--muted); }
+.seg button.on { background: var(--sheet); color: var(--ink); box-shadow: 0 2px 6px rgba(21,35,58,.12); }
+.seg button:focus-visible { outline: 2px solid var(--gold); }
+.chart-wrap { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 24px; align-items: start; }
+.chart { width: 100%; height: auto; display: block; overflow: visible; }
+.chart .grid { stroke: var(--rule); stroke-width: 1; }
+.chart .tick { font-family: var(--font-mono); font-size: 11px; fill: var(--muted); }
+.chart .line { fill: none; stroke: var(--green); stroke-width: 2.6; stroke-linejoin: round; stroke-linecap: round; }
+.chart .line.opt { stroke: var(--gold); }
+.chart .pt { fill: var(--sheet); stroke: var(--green); stroke-width: 2.5; cursor: pointer; }
+.chart .pt.opt { stroke: var(--gold); }
+.chart .pt.on { fill: var(--gold); stroke: var(--gold); }
+.chart .val { font-family: var(--font-mono); font-size: 11px; fill: var(--ink); font-weight: 500; }
+.chart .ceiling { stroke: var(--gold); stroke-dasharray: 4 4; stroke-width: 1; }
+.chart .ceil-label { font-family: var(--font-mono); font-size: 10px; fill: var(--gold); }
+.wishes { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.wishes li { display: grid; grid-template-columns: 70px minmax(0, 1fr); gap: 10px; padding: 10px 10px; border-bottom: 1px solid var(--rule); cursor: pointer; border-radius: 4px; transition: background .15s; }
+.wishes li:first-child { border-top: 1px solid var(--rule); }
+.wishes li.on { background: var(--gold-soft); }
+.wishes li:focus-visible { outline: 2px solid var(--gold); }
+.wishes .q { font-family: var(--font-mono); font-size: 12px; color: var(--gold); padding-top: 2px; }
+.wishes .w { font-size: 14.5px; line-height: 1.45; }
+.opt-note { background: var(--gold-soft); border-radius: 4px; padding: 10px 14px; font-size: 13.5px; line-height: 1.45; }
+@media (max-width: 720px) { .chart-wrap { grid-template-columns: 1fr; } }
+
+/* Wish label above list */
+.wish-head { font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+.wish-head b { color: var(--gold); font-weight: 500; }
+.wishes.swap { animation: drop .35s ease; }
+
+/* Dividend wheel */
+.wheel-wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px; align-items: center; }
+.wheel-box { position: relative; width: 100%; max-width: 360px; aspect-ratio: 1; margin: 0 auto; }
+.wheel-box canvas { width: 100%; height: 100%; display: block; }
+.pointer { position: absolute; left: 50%; top: -6px; transform: translateX(-50%); width: 0; height: 0; border-left: 14px solid transparent; border-right: 14px solid transparent; border-top: 26px solid var(--gold); filter: drop-shadow(0 3px 3px rgba(0,0,0,.25)); z-index: 2; }
+.hub { position: absolute; left: 50%; top: 50%; width: 22%; aspect-ratio: 1; transform: translate(-50%, -50%); border-radius: 50%; background: var(--navy); border: 3px solid var(--gold-hi); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 700; color: var(--gold-hi); font-size: clamp(14px, 3vw, 20px); box-shadow: 0 4px 12px rgba(0,0,0,.25); }
+.wheel-side { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.spin {
+  appearance: none; cursor: pointer; border: 0; border-radius: 4px; align-self: flex-start;
+  padding: 14px 26px; background: var(--navy); color: #fff; font: 600 15px var(--font-body); box-shadow: 0 6px 16px rgba(21,35,58,.2);
+}
+.spin:hover { background: var(--navy-2); }
+.spin:disabled { opacity: .6; cursor: default; }
+.spin:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+.result { border: 1px solid #ecdcb4; background: var(--gold-soft); border-radius: 6px; padding: 16px 18px; min-height: 132px; display: flex; flex-direction: column; gap: 6px; }
+.result .r-tag { font-family: var(--font-mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--gold); }
+.result .r-title { font-family: var(--font-display); font-weight: 600; font-size: 22px; line-height: 1.2; }
+.result p { margin: 0; font-size: 15px; line-height: 1.5; }
+.result.pop { animation: drop .35s ease; }
+.collected { font-family: var(--font-mono); font-size: 12.5px; color: var(--muted); }
+.collected b { color: var(--green); font-weight: 500; }
+@media (max-width: 680px) { .wheel-wrap { grid-template-columns: 1fr; } .spin { align-self: stretch; } }
+
+/* Conclusion */
+.concl { position: relative; background: var(--navy); color: #e6ebf2; border-radius: 6px; padding: clamp(22px, 4vw, 36px); display: flex; flex-direction: column; gap: 16px; overflow: hidden; isolation: isolate; }
+.concl::before { content: ""; position: absolute; inset: 10px; border: 1px solid rgba(226,194,122,.35); border-radius: 3px; pointer-events: none; z-index: -1; }
+.concl h2 { color: #fff; }
+.concl p { margin: 0; font-family: var(--font-display); font-size: clamp(17px, 2.4vw, 19.5px); line-height: 1.65; max-width: 60ch; }
+.verdict { display: flex; flex-wrap: wrap; gap: 8px 10px; }
+.verdict span { font-family: var(--font-mono); font-size: 12.5px; padding: 6px 10px; border: 1px solid rgba(226,194,122,.4); border-radius: 3px; color: #c9d3e0; }
+.verdict b { color: var(--gold-hi); font-weight: 500; }
+.sign { font-family: var(--font-display); font-style: italic; color: #a9b6c9; }
+/* Sign-off for the whole report */
+.signoff { display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center; padding-top: 6px; }
+.signoff-rule { display: flex; align-items: center; gap: 14px; width: 100%; font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); }
+.signoff-rule::before, .signoff-rule::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--gold-hi)); }
+.signoff-rule::after { background: linear-gradient(90deg, var(--gold-hi), transparent); }
+.signoff p { margin: 0; font-family: var(--font-display); font-size: 16px; color: var(--muted); max-width: 66ch; text-wrap: balance; }
+.approve-row { position: relative; display: flex; align-items: center; justify-content: center; min-height: 84px; width: 100%; }
+.approve {
+  appearance: none; cursor: pointer; border: 0; border-radius: 4px;
+  padding: 16px 34px; background: linear-gradient(180deg, var(--gold-hi), var(--gold)); color: var(--navy);
+  font-family: var(--font-body); font-weight: 600; font-size: 16px; box-shadow: 0 8px 22px rgba(184,137,47,.35);
+}
+.approve:hover { filter: brightness(1.05); }
+.approve:focus-visible { outline: 3px solid var(--navy); outline-offset: 3px; }
+.stamp {
+  position: absolute; right: 0; top: 50%; margin-top: -30px;
+  border: 3px double var(--gold); color: var(--gold); border-radius: 6px; padding: 8px 14px; background: rgba(255,255,255,.85);
+  font-family: var(--font-mono); font-weight: 500; font-size: 13px; letter-spacing: .12em; text-align: center; line-height: 1.35;
+  transform: rotate(-9deg);
+}
+.stamp.in { animation: stamp .5s cubic-bezier(.2,1.5,.4,1); }
+@keyframes stamp { from { transform: rotate(-9deg) scale(1.8); opacity: 0; } to { transform: rotate(-9deg) scale(1); opacity: 1; } }
+@media (max-width: 820px) {
+  .approve-row { flex-direction: column; gap: 18px; }
+  .stamp { position: static; margin: 0; }
+}
+
+footer { font-size: 12px; color: var(--muted); line-height: 1.5; border-top: 1px solid var(--rule); padding-top: 14px; text-align: center; text-wrap: balance; }
+#fx { position: fixed; inset: 0; pointer-events: none; z-index: 10; }
+
+@media (max-width: 560px) { .hint { margin-left: 0; width: 100%; } }
+@media (prefers-reduced-motion: reduce) {
+  .stamp.in, .medal .ring { animation: none; }
+  .kpi-in { transition: none; }
+}
+</style>
+</head>
+<body>
+<canvas id="fx" aria-hidden="true"></canvas>
+
+<main class="sheet">
+  <header class="cover">
+    <canvas id="guilloche" aria-hidden="true"></canvas>
+    <div class="meta"><span>Аналитическая записка · <b>21.10.2026</b></span><span>Конфиденциально: только для именинника</span></div>
+    <div class="cover-main">
+      <div>
+        <h1>С днём <em>рождения</em></h1>
+        <p class="dek">Краткий отчёт о прошедшем годе и прогноз на следующий. Цифры проверены, выводы однозначны.</p>
+      </div>
+      <div class="medal" aria-hidden="true">
+        <svg viewBox="0 0 200 200">
+          <defs>
+            <radialGradient id="mg" cx="40%" cy="35%" r="70%"><stop offset="0" stop-color="#f1d896"/><stop offset=".55" stop-color="#c79a3e"/><stop offset="1" stop-color="#8e6620"/></radialGradient>
+            <path id="mp" d="M100,100 m-74,0 a74,74 0 1,1 148,0 a74,74 0 1,1 -148,0"/>
+          </defs>
+          <circle cx="100" cy="100" r="96" fill="none" stroke="#e2c27a" stroke-opacity=".35"/>
+          <g class="ring">
+            <circle cx="100" cy="100" r="88" fill="url(#mg)"/>
+            <text font-family="IBM Plex Mono, monospace" font-size="12" letter-spacing="3" fill="#3b2a0b"><textPath href="#mp" textLength="458" lengthAdjust="spacing">С ДНЁМ РОЖДЕНИЯ ✦ 21.10.2026 ✦ </textPath></text>
+          </g>
+          <circle cx="100" cy="100" r="58" fill="#14223a"/>
+          <circle cx="100" cy="100" r="52" fill="none" stroke="#e2c27a" stroke-opacity=".6"/>
+          <text x="100" y="98" text-anchor="middle" font-family="Literata, Georgia, serif" font-weight="700" font-size="40" fill="#e2c27a">21</text>
+          <text x="100" y="122" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="12" letter-spacing="3" fill="#c9d3e0">ОКТЯБРЯ</text>
+        </svg>
+      </div>
+    </div>
+    <div class="cover-rule"></div>
+  </header>
+
+  <div class="body">
+    <section class="sec" aria-labelledby="s1">
+      <div class="sec-head"><span class="sec-no">01</span><h2 id="s1">Ключевые показатели</h2></div>
+      <div class="kpis" id="kpis"></div>
+    </section>
+
+    <section class="sec" aria-labelledby="s2">
+      <div class="sec-head">
+        <span class="sec-no">02</span><h2 id="s2">Прогноз на год вперёд</h2>
+        <div class="seg" role="group" aria-label="Сценарий прогноза" style="margin-left:auto">
+          <button type="button" class="on" data-sc="base">Базовый</button>
+          <button type="button" data-sc="opt">Оптимистичный</button>
+        </div>
+      </div>
+      <div class="chart-wrap">
+        <svg class="chart" id="chart" viewBox="0 0 440 270" role="img" aria-label="График индекса хорошего настроения на год вперёд"></svg>
+        <div><div class="wish-head" id="wishHead">Сценарий: <b>базовый</b> · пожелания по кварталам</div><ul class="wishes" id="wishes"></ul></div>
+      </div>
+      <p class="note" id="chartNote">Индекс хорошего настроения, сегодня = 100. Каждая точка графика соответствует пожеланию на квартал.<br><b>Прогноз консервативный:</b> фактические результаты, по нашим оценкам, превзойдут ожидания.</p>
+      <div class="opt-note" id="optNote" hidden>В оптимистичном сценарии график не помещается в отчёт, а пожелания становятся смелее. Мы считаем это хорошим знаком.</div>
+    </section>
+
+    <section class="sec" aria-labelledby="s3">
+      <div class="sec-head"><span class="sec-no">03</span><h2 id="s3">Колесо дивидендов</h2></div>
+      <div class="wheel-wrap">
+        <div class="wheel-box">
+          <div class="pointer" aria-hidden="true"></div>
+          <canvas id="wheel" width="720" height="720" role="img" aria-label="Колесо с восемью секторами пожеланий"></canvas>
+          <div class="hub" aria-hidden="true">21</div>
+        </div>
+        <div class="wheel-side">
+          <div class="result" id="result" aria-live="polite">
+            <span class="r-tag">Ваш дивиденд</span>
+            <span class="r-title">Пока не начислен</span>
+            <p>Крутите колесо: в каждом секторе лежит пожелание. Все восемь секторов равны, вероятность каждого 12,5%. Мы проверили.</p>
+          </div>
+          <button class="spin" id="spin" type="button">Крутить колесо</button>
+          <span class="collected">Получено дивидендов: <b id="got">0 из 8</b></span>
+        </div>
+      </div>
+    </section>
+
+    <section class="concl" aria-labelledby="s4">
+      <div class="sec-head"><span class="sec-no">04</span><h2 id="s4">Заключение</h2></div>
+      <p>Спасибо вам за спокойствие, за внимание к каждой мелочи и за ту ясность, с которой вы принимаете решения. Рядом с таким человеком работать надёжно и по-настоящему интересно. Пусть новый год жизни будет таким же последовательным в хорошем и щедрым на приятные неожиданности.</p>
+      <div class="verdict">
+        <span>Рекомендация: <b>праздновать</b></span>
+        <span>Горизонт: <b>долгосрочный</b></span>
+        <span>Риск: <b>отсутствует</b></span>
+      </div>
+      <span class="sign">С уважением и теплом, ваша команда</span>
+    </section>
+
+    <section class="signoff" aria-label="Утверждение отчёта">
+      <div class="signoff-rule">Утверждение отчёта</div>
+      <p>Все разделы рассмотрены, выводы обоснованы, прогнозы консервативны. Остался последний шаг.</p>
+      <div class="approve-row">
+        <button class="approve" id="approve" type="button">Утвердить отчёт</button>
+        <div class="stamp" id="stamp" hidden>УТВЕРЖДЕНО<br>21.10.2026</div>
+      </div>
+    </section>
+
+    <footer>Данные отчёта основаны на многолетних наблюдениях команды и не являются публичной офертой.<br>Прошлые успехи гарантируют будущие 🙂</footer>
+  </div>
+</main>
+
+<script>
+(function () {
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var $ = function (id) { return document.getElementById(id); };
+
+  /* Guilloche on the cover */
+  function drawGuilloche() {
+    var c = $("guilloche"), box = c.parentElement.getBoundingClientRect(), d = window.devicePixelRatio || 1;
+    c.width = box.width * d; c.height = box.height * d;
+    var g = c.getContext("2d"); g.setTransform(d, 0, 0, d, 0, 0);
+    var w = box.width, h = box.height;
+    g.lineWidth = .7;
+    for (var k = 0; k < 26; k++) {
+      g.beginPath();
+      g.strokeStyle = "rgba(226,194,122," + (0.07 + (k % 5) * 0.025) + ")";
+      for (var x = 0; x <= w; x += 4) {
+        var y = h * 0.5 + Math.sin(x / 70 + k * 0.42) * (h * 0.28) * Math.cos(x / 260 + k * 0.11) + (k - 13) * 4;
+        if (x === 0) g.moveTo(x, y); else g.lineTo(x, y);
+      }
+      g.stroke();
+    }
+  }
+  drawGuilloche();
+  var rt; addEventListener("resize", function () { clearTimeout(rt); rt = setTimeout(drawGuilloche, 150); });
+
+  /* KPI flip cards */
+  var K = [
+    { v: "+1", n: 1, pre: "+", label: "год опыта и мудрости", note: "Стабильный рост год к году",
+      m: "Источник данных: календарь. Погрешность измерения: 0 дней." },
+    { v: "100%", n: 100, suf: "%", label: "спокойствия", note: "Волатильность не обнаружена",
+      m: "Замерено в самые напряжённые дни квартала. Показатель не дрогнул ни разу." },
+    { v: "99,9%", n: 99.9, dec: 1, suf: "%", label: "внимания к деталям", note: "Оставшиеся 0,1% вы тоже заметили",
+      m: "Мы долго искали ошибку в этой цифре. Не нашли. Подозреваем, что вы найдёте." },
+    { v: "∞", label: "благодарности команды", note: "Точной оценке не поддаётся",
+      m: "Пытались посчитать. Калькулятор попросил выходной и поздравить вас лично." }
+  ];
+  var kpis = $("kpis");
+  K.forEach(function (k, i) {
+    var c = document.createElement("div");
+    c.className = "kpi";
+    c.innerHTML = '<span class="kpi-val"></span><span class="kpi-label"></span><span class="kpi-note"></span>' +
+      '<button type="button" class="how" aria-expanded="false" aria-controls="m' + i + '">Как считали? <span class="chev" aria-hidden="true">→</span></button>' +
+      '<div class="method" id="m' + i + '" hidden><span class="m-title">Методика расчёта</span><span class="m-text"></span><button type="button" class="m-close">Понятно ✕</button></div>';
+    var val = c.querySelector(".kpi-val");
+    val.textContent = k.v;
+    c.querySelector(".kpi-label").textContent = k.label;
+    c.querySelector(".kpi-note").textContent = k.note;
+    var m = c.querySelector(".method"); m.querySelector(".m-text").textContent = k.m;
+    var btn = c.querySelector(".how"), close = c.querySelector(".m-close");
+    function setOpen(open) {
+      m.hidden = !open; c.classList.toggle("open", open);
+      btn.setAttribute("aria-expanded", open ? "true" : "false");
+      (open ? close : btn).focus({ preventScroll: true });
+    }
+    btn.addEventListener("click", function () { setOpen(true); });
+    close.addEventListener("click", function () { setOpen(false); });
+    if (k.n != null && !reduce) countUp(val, k.n, k.dec || 0, k.pre || "", k.suf || "");
+    kpis.appendChild(c);
+  });
+  function countUp(el, end, dec, pre, suf) {
+    var t0 = null, dur = 1300;
+    (function step(t) {
+      if (!t0) t0 = t;
+      var p = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - p, 3);
+      el.textContent = pre + (end * e).toFixed(dec).replace(".", ",") + suf;
+      if (p < 1) requestAnimationFrame(step);
+    })(performance.now());
+  }
+
+  /* Forecast chart */
+  var Q = ["Сегодня", "I кв.", "II кв.", "III кв.", "IV кв."];
+  var SC = {
+    base: [100, 118, 131, 149, 162],
+    opt:  [100, 135, 172, 214, 268]
+  };
+  var WISHES = {
+    base: [
+      "Тёплый день в кругу близких и хорошие новости с самого утра",
+      "Крепкого здоровья и сил на всё задуманное",
+      "Проектов, в которых цифры сходятся с первого раза",
+      "Времени на отдых, путешествия и всё, что по-настоящему радует",
+      "Спокойной уверенности и людей рядом, на которых можно положиться"
+    ],
+    opt: [
+      "Торт, который превзойдёт ожидания аналитиков",
+      "Столько энергии, что под неё придётся открывать новые проекты",
+      "Сделки, которые закрываются быстрее, чем остывает кофе",
+      "Путешествие, ради которого не жалко выключить телефон. Совсем",
+      "Результаты, которые не помещаются ни в один отчёт. Включая этот"
+    ]
+  };
+  var svg = $("chart"), NS = "http://www.w3.org/2000/svg";
+  var W = 440, H = 270, L = 40, R = 20, T = 26, B = 34, ymin = 90, ymax = 170;
+  var scenario = "base", current = 4, circles = [];
+  function x(i) { return L + i * (W - L - R) / (Q.length - 1); }
+  function y(v) { return T + (ymax - Math.min(v, ymax + 8)) * (H - T - B) / (ymax - ymin); }
+  function el(tag, attrs, text, parent) {
+    var n = document.createElementNS(NS, tag);
+    for (var k in attrs) n.setAttribute(k, attrs[k]);
+    if (text != null) n.textContent = text;
+    (parent || svg).appendChild(n); return n;
+  }
+  function drawChart(animate) {
+    svg.innerHTML = '<defs><linearGradient id="af" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="' + (scenario === "opt" ? "#b8892f" : "#1d6b57") + '" stop-opacity=".2"/><stop offset="1" stop-color="#1d6b57" stop-opacity="0"/></linearGradient></defs>';
+    [100, 120, 140, 160].forEach(function (v) {
+      el("line", { x1: L, x2: W - R, y1: y(v), y2: y(v), "class": "grid" });
+      el("text", { x: L - 8, y: y(v) + 4, "text-anchor": "end", "class": "tick" }, v);
+    });
+    Q.forEach(function (q, i) { el("text", { x: x(i), y: H - 10, "text-anchor": "middle", "class": "tick" }, q); });
+    var data = SC[scenario];
+    if (scenario === "opt") {
+      el("line", { x1: L, x2: W - R, y1: T - 8, y2: T - 8, "class": "ceiling" });
+      el("text", { x: L, y: T - 13, "class": "ceil-label" }, "граница отчёта");
+    }
+    var pts = data.map(function (v, i) { return x(i) + "," + y(v); }).join(" ");
+    el("polygon", { points: x(0) + "," + y(ymin) + " " + pts + " " + x(4) + "," + y(ymin), fill: "url(#af)" });
+    var line = el("polyline", { points: pts, "class": "line" + (scenario === "opt" ? " opt" : "") });
+    if (animate && !reduce) {
+      var len = line.getTotalLength();
+      line.style.strokeDasharray = len; line.style.strokeDashoffset = len;
+      line.getBoundingClientRect();
+      line.style.transition = "stroke-dashoffset 1.3s ease";
+      line.style.strokeDashoffset = 0;
+    }
+    circles = [];
+    data.forEach(function (v, i) {
+      var off = v > ymax;
+      var lx = i === 0 ? x(i) + 10 : (i === 4 ? x(i) : x(i));
+      var anchor = i === 0 ? "start" : (i === 4 ? "end" : "middle");
+      el("text", { x: lx, y: y(v) - 12, "text-anchor": anchor, "class": "val" }, off ? v + " ↑" : v);
+      var c = el("circle", { cx: x(i), cy: y(v), r: 6, "class": "pt" + (scenario === "opt" ? " opt" : "") });
+      c.addEventListener("mouseenter", function () { select(i); });
+      c.addEventListener("click", function () { select(i); });
+      circles.push(c);
+    });
+    select(current);
+  }
+  var ul = $("wishes"), items = [];
+  WISHES.base.forEach(function (w, i) {
+    var li = document.createElement("li");
+    li.tabIndex = 0;
+    li.innerHTML = '<span class="q"></span><span class="w"></span>';
+    li.children[0].textContent = Q[i]; li.children[1].textContent = w;
+    li.addEventListener("mouseenter", function () { select(i); });
+    li.addEventListener("click", function () { select(i); });
+    li.addEventListener("focus", function () { select(i); });
+    ul.appendChild(li); items.push(li);
+  });
+  function select(i) {
+    current = i;
+    circles.forEach(function (c, k) { c.classList.toggle("on", k === i); c.setAttribute("r", k === i ? 8 : 6); });
+    items.forEach(function (li, k) { li.classList.toggle("on", k === i); });
+  }
+  document.querySelectorAll(".seg button").forEach(function (b) {
+    b.addEventListener("click", function () {
+      scenario = b.dataset.sc;
+      document.querySelectorAll(".seg button").forEach(function (o) { o.classList.toggle("on", o === b); });
+      $("optNote").hidden = scenario !== "opt";
+      WISHES[scenario].forEach(function (w, i) { items[i].children[1].textContent = w; });
+      $("wishHead").innerHTML = "Сценарий: <b>" + (scenario === "opt" ? "оптимистичный" : "базовый") + "</b> · пожелания по кварталам";
+      ul.classList.remove("swap"); void ul.offsetWidth; if (!reduce) ul.classList.add("swap");
+      drawChart(true);
+    });
+  });
+  drawChart(true);
+
+  /* Dividend wheel */
+  var WH = [
+    { t: "Дивиденды", cat: "Финансы", c: "#1d6b57", w: "Пусть каждое вложение окупается с запасом, а доходность приятно удивляет даже самые смелые прогнозы." },
+    { t: "Ликвидность", cat: "Финансы и время", c: "#14223a", w: "Свободных средств всегда в избытке, а свободного времени хотя бы в достатке." },
+    { t: "Бонус", cat: "Здоровье", c: "#b8892f", w: "Годовой бонус в виде крепкого здоровья, сил и хорошего сна. Выплачивается ежедневно." },
+    { t: "KPI", cat: "Успехи", c: "#4b6c94", w: "Цели года достигнуты досрочно, а следующие оказываются ещё интереснее." },
+    { t: "Отпуск", cat: "Отдых", c: "#1d6b57", w: "Отпуск, после которого хочется сказать: «Вот это был настоящий отдых»." },
+    { t: "Аудит", cat: "Успехи", c: "#14223a", w: "Аудит года завершён: много сделанного и ни одной ошибки в расчётах. Рекомендация: продолжать в том же духе." },
+    { t: "Хеджирование", cat: "Настроение", c: "#b8892f", w: "От плохого настроения вы застрахованы командой. Полис бессрочный, франшиза нулевая." },
+    { t: "Сюрприз", cat: "Настроение", c: "#4b6c94", w: "Внеплановая приятная новость. Срок поставки: в ближайшее время. Детали засекречены." }
+  ];
+  var wc = $("wheel"), wg = wc.getContext("2d"), N = WH.length, SEG = Math.PI * 2 / N, angle = 0, spinning = false, last = -1, got = {};
+  function drawWheel() {
+    var S = wc.width, r = S / 2;
+    wg.clearRect(0, 0, S, S);
+    wg.save(); wg.translate(r, r); wg.rotate(angle);
+    for (var i = 0; i < N; i++) {
+      var a0 = -Math.PI / 2 - SEG / 2 + i * SEG;
+      wg.beginPath(); wg.moveTo(0, 0); wg.arc(0, 0, r - 12, a0, a0 + SEG); wg.closePath();
+      wg.fillStyle = WH[i].c; wg.fill();
+      wg.strokeStyle = "#e2c27a"; wg.lineWidth = 3; wg.stroke();
+      wg.save(); wg.rotate(a0 + SEG / 2);
+      var flip = Math.cos(angle + a0 + SEG / 2) < 0;
+      if (flip) wg.rotate(Math.PI);
+      wg.textAlign = flip ? "left" : "right"; wg.textBaseline = "middle";
+      wg.fillStyle = WH[i].c === "#b8892f" ? "#14223a" : "#ffffff";
+      wg.font = "600 " + (WH[i].t.length > 10 ? 25 : 30) + "px 'IBM Plex Sans', Arial, sans-serif";
+      wg.fillText(WH[i].t, flip ? -(r - 40) : r - 40, 0);
+      wg.restore();
+    }
+    wg.restore();
+    wg.beginPath(); wg.arc(r, r, r - 6, 0, Math.PI * 2); wg.strokeStyle = "#b8892f"; wg.lineWidth = 10; wg.stroke();
+    for (var k = 0; k < N * 2; k++) {
+      var a = k * Math.PI / N;
+      wg.beginPath(); wg.arc(r + Math.cos(a) * (r - 6), r + Math.sin(a) * (r - 6), 4, 0, Math.PI * 2); wg.fillStyle = "#f6e2a8"; wg.fill();
+    }
+  }
+  drawWheel();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(drawWheel);
+  function showResult(i) {
+    var d = WH[i], box = $("result");
+    box.innerHTML = '<span class="r-tag"></span><span class="r-title"></span><p></p>';
+    box.querySelector(".r-tag").textContent = "Ваш дивиденд · " + d.cat;
+    box.querySelector(".r-title").textContent = d.t;
+    box.querySelector("p").textContent = d.w;
+    box.classList.remove("pop"); void box.offsetWidth; if (!reduce) box.classList.add("pop");
+    got[i] = true;
+    var n = Object.keys(got).length;
+    $("got").textContent = n + " из " + N;
+    if (n === N) $("got").textContent = "8 из 8. Портфель собран полностью!";
+  }
+  $("spin").addEventListener("click", function () {
+    if (spinning) return;
+    var target;
+    do { target = Math.floor(Math.random() * N); } while (target === last && N > 1);
+    var rest = [];
+    for (var i = 0; i < N; i++) if (!got[i] && i !== last) rest.push(i);
+    if (rest.length) target = rest[Math.floor(Math.random() * rest.length)];
+    last = target;
+    // sector i is at top when angle = -i*SEG (mod 2π)
+    var base = -target * SEG + (Math.random() - .5) * SEG * 0.6;
+    var cur = angle % (Math.PI * 2);
+    var delta = ((base - cur) % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2) + Math.PI * 2 * 5;
+    var start = angle, dur = reduce ? 1 : 4200, t0 = null, btn = this;
+    spinning = true; btn.disabled = true;
+    function step(t) {
+      if (!t0) t0 = t;
+      var p = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - p, 4);
+      angle = start + delta * e; drawWheel();
+      if (p < 1) requestAnimationFrame(step);
+      else { spinning = false; btn.disabled = false; btn.textContent = "Крутить ещё раз"; showResult(target); }
+    }
+    requestAnimationFrame(step);
+  });
+
+  /* Approve: stamp + gentle confetti of digits */
+  var cv = $("fx"), ctx = cv.getContext("2d"), parts = [], running = false;
+  function resize() { var d = window.devicePixelRatio || 1; cv.width = innerWidth * d; cv.height = innerHeight * d; ctx.setTransform(d, 0, 0, d, 0, 0); }
+  resize(); addEventListener("resize", resize);
+  var GLYPHS = ["1", "0", "%", "+", "✦", "7", "3", "∑", "↑", "₽"];
+  var COLORS = ["#1d6b57", "#b8892f", "#5d7ea6", "#4b977f", "#e2c27a"];
+  function burst() {
+    for (var i = 0; i < 110; i++) {
+      parts.push({ x: innerWidth * (0.1 + Math.random() * 0.8), y: -20 - Math.random() * innerHeight * 0.5,
+        vx: (Math.random() - .5) * 1.2, vy: 1.3 + Math.random() * 2.2, r: Math.random() * 6.28, vr: (Math.random() - .5) * .08,
+        g: GLYPHS[i % GLYPHS.length], c: COLORS[i % COLORS.length], s: 14 + Math.random() * 12 });
+    }
+    if (!running) { running = true; requestAnimationFrame(tick); }
+  }
+  function tick() {
+    ctx.clearRect(0, 0, innerWidth, innerHeight);
+    parts = parts.filter(function (p) { return p.y < innerHeight + 30; });
+    parts.forEach(function (p) {
+      p.x += p.vx; p.y += p.vy; p.r += p.vr;
+      ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.r);
+      ctx.fillStyle = p.c; ctx.font = "600 " + p.s + "px 'IBM Plex Mono', monospace"; ctx.textAlign = "center";
+      ctx.fillText(p.g, 0, 0); ctx.restore();
+    });
+    if (parts.length) requestAnimationFrame(tick); else { running = false; ctx.clearRect(0, 0, innerWidth, innerHeight); }
+  }
+  $("approve").addEventListener("click", function () {
+    var st = $("stamp");
+    st.hidden = false; st.classList.remove("in"); void st.offsetWidth; st.classList.add("in");
+    this.textContent = "Отчёт утверждён. С праздником!";
+    if (!reduce) burst();
+  });
+})();
+</script>
+</body>
+</html>
